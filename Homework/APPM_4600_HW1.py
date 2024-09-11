@@ -19,7 +19,7 @@ def question_1 (part = "i"):
     plt.show()
 
 question_1()
-
+print('Hi')
 def question_5 (x_mag = "small"):
     if x_mag == "small":
         x = np.pi
