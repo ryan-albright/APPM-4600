@@ -89,7 +89,7 @@ def driver_2(part): # indicate "part a" or "part b"
 # driver_2("part b") # commented out to run other parts of the code
 
 # Question 3
-def driver_3(): 
+# def driver_3(): 
     f = lambda x: x**3 + x - 4
     a = 1
     b = 4
@@ -109,70 +109,50 @@ y = x - 4*np.sin(2*x) - 3
 plt.plot(x,y)
 plt.xlabel('x')
 plt.ylabel('y')
-plt.show()
+# plt.show()
 
 def driver_4():
-     
-     f1 = lambda x: -np.sin(2*x) - 5*x/4 - 3/4
 
-#fixed point  
 
-     Nmax = 20
-     tol = 5*1e-10
-    
-#test f1 '''
-     x0 = -1
-     [xstar, x_list, ier] = fixedpt(f1,x0,tol,Nmax)
-     [_lambda, alpha] = compute_order(x_list, xstar)
+     f1 = lambda x: -np.sin(2*x)+(5*x)/4-3/4
+
+     Nmax = 1000
+     tol = 1e-11
+
+     x0 = 0
+     [xstar,ier] = fixedpt(f1,x0,tol,Nmax)
      print('the approximate fixed point is:',xstar)
-     print('the list of iterates is:', x_list)
      print('f1(xstar):',f1(xstar))
      print('Error message reads:',ier)
-     print(f"The order of convergence is {np.round(alpha, 1)}")
+   
+     x0 = 3
+     [xstar,ier] = fixedpt(f1,x0,tol,Nmax)
+     print('the approximate fixed point is:',xstar)
+     print('f2(xstar):',f1(xstar))
+     print('Error message reads:',ier)
 
-# define fixed point routine
+# define routines
 def fixedpt(f,x0,tol,Nmax):
 
-    ''' x0 = initial guess''' 
+
+    ''' x0 = initial guess'''
     ''' Nmax = max number of iterations'''
     ''' tol = stopping tolerance'''
 
+
     count = 0
-    x_list = np.array([x0])
     while (count <Nmax):
-       count = count + 1
+       count = count +1
        x1 = f(x0)
-       x_list = np.append(x_list, x1)
-       if (abs(x1-x0) < tol):
+       if (abs(x1-x0) <tol):
           xstar = x1
           ier = 0
-          return [xstar,x_list, ier]
+          return [xstar,ier]
        x0 = x1
+
 
     xstar = x1
     ier = 1
-    return [xstar, x_list, ier]
-    
-def compute_order(x_list, xstar):
-    """
-    Approximates order of convergence given 
-    x_list: list of iterates
-    x_star: fixed point/solution
-    """
-    x_list = x_list[0:-1]
-    diff1 = np.abs(x_list[1::] - xstar)
-    print(diff1)
-    diff2 = np.abs(x_list[0:-1] - xstar)
-    print(diff2)
-    fit = np.polyfit(np.log(diff2.flatten()), np.log(diff1.flatten()), 1)
-
-    _lambda = np.exp(fit[1])
-    alpha = fit[0]
-    """
-    lamba  = e^intercept
-    alpha = slope
-    """
-
-    return [_lambda, alpha]
-
+    return [xstar, ier]
+   
 driver_4()
