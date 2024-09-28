@@ -241,7 +241,7 @@ def driver_4 ():
     print('Number of iterations:', '%d' % it)
     print('The iterates are', p)
     
-# driver_4()
+driver_4()
 
 # Question 5
 def driver_5 ():
