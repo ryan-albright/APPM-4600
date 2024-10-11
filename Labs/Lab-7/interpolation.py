@@ -22,49 +22,6 @@ def Vandermonde(x):
     return V
 
 # 3.1
-def monomial_driver(): 
-
-    f = lambda x: 2*x +4
-    
-    N = 10
-    a = 0
-    b = 1
-    
-    ''' Create interpolation nodes'''
-    xint = np.linspace(a,b,N+1)
-    # print('xint =',xint)
-    '''Create interpolation data'''
-    yint = f(xint)
-    # print('yint =',yint)
-    
-    ''' Create the Vandermonde matrix'''
-    V = Vandermonde(xint)
-    # print('V = ',V)
-
-    ''' Invert the Vandermonde matrix'''    
-    Vinv = inv(V)
-    # print('Vinv = ' , Vinv)
-    
-    ''' Apply inverse to rhs'''
-    ''' to create the coefficients'''
-    # coef = Vinv @ yint
-    coef = np.dot(Vinv, yint)
-    
-    # print('coef = ', coef)
-
-# No validate the code
-    Neval = 100    
-    xeval = np.linspace(a,b,Neval+1)
-    yeval = eval_monomial(xeval,coef,N,Neval)
-
-# exact function
-    yex = f(xeval)
-    
-    err =  norm(yex-yeval) 
-    print('err = ', err)
-    
-    return
-
 def eval_monomial(xeval,coef,N,Neval):
 
     yeval = coef[0]*np.ones(Neval+1)
@@ -81,7 +38,7 @@ def eval_monomial(xeval,coef,N,Neval):
 
     return yeval
 
-def driver_311():
+def driver_31():
 
     f = lambda x: (1 + (10*x)**2)**-1
 
@@ -197,4 +154,4 @@ def evalDDpoly(xval, xint,y,N):
 
     return yeval
 
-driver_311()
+driver_31()
