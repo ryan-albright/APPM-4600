@@ -18,10 +18,11 @@ def Vandermonde(x):
         V[:,i] = c
     return V
 
-def coeff(f, N):
-    h = 2 / (N - 1)
-    i = np.array(range(1,N+1))
-    xi = np.array(-1 + (i - 1)*h)
+def coeff(f,N,xi=None):
+    if not isinstance(xi,np.ndarray):
+        h = 2 / (N - 1)
+        i = np.array(range(1,N+1))
+        xi = np.array(-1 + (i - 1)*h)
     yi = f(xi)
 
     # Assemble Linear System
@@ -81,19 +82,24 @@ def driver_1(plot_type = None):
 # driver_1() # either input an N to test or the program will run through a predetermined sequences of N to display the Runge Phenomena
 
 # Question 2
-def driver_2():
+def driver_2(point_type = 'None'):
     f = lambda x: 1/(1+100*x**2)
 
     # interpolation points
     N = 100
     a = -1
     b = 1
-    xinterp = np.linspace(a,b,N)
+    if point_type == 'Cheb':
+        i = np.array(list(range(1,N+1)))
+        xinterp = np.cos((2*i - 1)*np.pi /(2*N))
+    else:
+        xinterp = np.linspace(a,b,N)
+    
     y = f(xinterp)
 
     # evaluation points
-    aeval = -0.6
-    beval = 0.6
+    aeval = -1
+    beval = 1
     N_eval = 200
     xeval = np.linspace(aeval,beval,N_eval)
 
@@ -157,40 +163,27 @@ def phi_n(x, xinterp, N):
 
 # Question 3
 def driver_3():
-    f = lambda x: 1/(1+100*x**2)
-    # f = lambda x: np.exp(x)
+    
+    f = lambda x: 1 / (1 + 100*x**2)
+    N = 40
 
-    # interpolation points
-    N = 100
-    a = -1
-    b = 1
-    xinterp = np.linspace(a,b,N)
-    # xinterp = np.empty(N)
-    # for i in range(N):
-    #     xinterp[i] = np.cos((2*i - 1)*np.pi / (2*N))
-    y = f(xinterp)
+    i = np.array(list(range(1,N+1)))
+    xi = np.cos((2*i - 1)*np.pi /(2*N))
+    [c,xi,yi] = coeff(f,N,xi)
 
-    # evaluation points
-    aeval = -0.6
-    beval = 0.6
-    N_eval = 200
-    xeval = np.linspace(aeval,beval,N_eval)
+    # plot f(x) and p(x)
+    x = np.linspace(-1,1,num=201)
+    y = f(x)
+    p_x = eval_monomial(x,c,N,len(x)-1)
+    
+    plt.plot(x,y,'o')
+    plt.plot(x,p_x,'o')
 
-    # Evaluate the Polynomial
-    w = weight_vector(xinterp,N)
-    p_x = np.empty(N_eval)
-    for i in range(N_eval):
-        phi = phi_n(xeval[i],xinterp,N)
+    # plot points
+    # plt.plot(xi, yi, 'o')
 
-        sum_x = 0
-        for j in range(N):
-            sum_x = sum_x + w[j] * y[j] / (xeval[i] - xinterp[j])
-        p_x[i] = phi * sum_x
-    print(p_x)
-
-    plt.plot(xinterp,y,'o')
-    plt.plot(xeval,p_x,'o')
-    plt.legend(['f(x)','p(x)'])
+    plt.legend(['f(x)', 'p(x)','Data Points'])
     plt.show()
 
-driver_3()
+driver_2('Cheb') # need to modify aeval and beval
+# driver_3()
