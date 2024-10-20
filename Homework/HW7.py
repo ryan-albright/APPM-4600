@@ -83,7 +83,9 @@ def driver_1(plot_type = None):
 
 # Question 2
 def driver_2(point_type = 'None'):
-    f = lambda x: 1/(1+100*x**2)
+    # f = lambda x: 1/(1+100*x**2)
+    f = lambda x: np.sin(x)
+
 
     # interpolation points
     N = 100
@@ -95,12 +97,12 @@ def driver_2(point_type = 'None'):
     else:
         xinterp = np.linspace(a,b,N)
     
-    y = f(xinterp)
+    yinterp = f(xinterp)
 
     # evaluation points
     aeval = -1
     beval = 1
-    N_eval = 200
+    N_eval = 10
     xeval = np.linspace(aeval,beval,N_eval)
 
     # Evaluate the Polynomial
@@ -111,11 +113,12 @@ def driver_2(point_type = 'None'):
 
         sum_x = 0
         for j in range(N):
-            sum_x = sum_x + w[j] * y[j] / (xeval[i] - xinterp[j])
+            sum_x = sum_x + w[j] * yinterp[j] / (xeval[i] - xinterp[j])
         p_x[i] = phi * sum_x
-    print(p_x)
 
-    plt.plot(xinterp,y,'o')
+    y = f(xeval)
+
+    plt.plot(xeval,y,'o')
     plt.plot(xeval,p_x,'o')
     plt.legend(['f(x)','p(x)'])
     plt.show()
@@ -185,5 +188,5 @@ def driver_3():
     plt.legend(['f(x)', 'p(x)','Data Points'])
     plt.show()
 
-driver_2('Cheb') # need to modify aeval and beval
+# driver_2('Cheb') # need to modify aeval and beval in driver function
 # driver_3()
