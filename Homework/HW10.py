@@ -30,4 +30,3 @@ def driver_1 ():
     plt.show()
 
 driver_1()
-
