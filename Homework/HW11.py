@@ -1,13 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import math
-from numpy.linalg import inv 
-from numpy.linalg import norm
-
+import scipy
+import scipy.integrate
 
 def driver_1(type):
     
-    f = lambda x: 1 / (1 +x**2)
+    f = lambda x: 1 / (1 + x**2)
     a = -5
     b = 5
     
@@ -16,7 +14,7 @@ def driver_1(type):
     
     # for simpson's n must be even.        
     # n+1 = number of pts.
-    n = 400
+    n = 1290
 
     if type == 'trap':
         I_trap = CompTrap(a,b,n,f)
@@ -31,8 +29,18 @@ def driver_1(type):
         print('I_simp = ', I_simp)
     
         err = abs(I_ex-I_simp)   
-        print('absolute error = ', err)    
+        print('absolute error = ', err)  
 
+    elif type == 'scipy':
+        output = scipy.integrate.quad(f,a,b,full_output=1,epsabs=10**-6)
+        I = output[0]
+        output_dict = output[2]
+        print('I_SCIPY = ', I)
+        its = output_dict['neval']
+        print(f'Scipy took {its} iterations')
+
+        err = abs(I_ex - I)
+        print('absolute error = ', err)
         
 def CompTrap(a,b,n,f):
     h = (b-a)/n
@@ -65,3 +73,4 @@ def CompSimp(a,b,n,f):
 
     
 driver_1('simp') # input trap, simp, or scipy
+
