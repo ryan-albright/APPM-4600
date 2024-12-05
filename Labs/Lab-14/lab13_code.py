@@ -29,6 +29,7 @@ def driver():
      A = create_rect(N,M)     
      b = np.random.rand(N,1)
 
+     [P, L, U] = scila.lu(A)
 
      
 def create_rect(N,M):
